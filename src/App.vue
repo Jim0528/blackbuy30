@@ -38,9 +38,12 @@
                     <div id="menu2" class="nav-box menuhd">
                         <ul>
                             <li class="index">
-                                <a href="#" class="">
+                                <!--<a href="#" class="">
+
+                                </a>-->
+                                <router-link to="/index">
                                     <span class="out" style="top: 0px;">首页</span>
-                                </a>
+                                </router-link>
                             </li>
                             <li class="news">
                                 <a href="#" class="">
@@ -80,6 +83,9 @@
                 </div>
             </div>
         </div>
+
+        <router-view></router-view>
+
         <!-- 尾部 -->
         <div class="footer">
             <div class="section">
