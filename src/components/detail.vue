@@ -183,8 +183,9 @@
 </template>
 
 <script>
-    import axios from "axios";
+    // import axios from "axios";
     import moment from "moment";
+
 
     export default {
         name: "detail",
@@ -198,7 +199,7 @@
         created() {
             // console.log(this.$route);
             const id = this.$route.params.id;
-            axios.get(`http://111.230.232.110:8899/site/goods/getgoodsinfo/${id}`)
+            this.$axios.get(`/site/goods/getgoodsinfo/${id}`)
                 .then(res => {
                     // console.log(res);
                     this.img = res.data.message.imglist[0].original_path;
