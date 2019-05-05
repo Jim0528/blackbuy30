@@ -14,12 +14,20 @@ import VueRuter from "vue-router";
 Vue.use(VueRuter);
 
 import index from './components/index.vue';
-
+import detail from './components/detail.vue';
 
 const routes = [
     {
-      path: '/index',
-      component: index
+      path: '/',
+      redirect: '/index'
+    },
+    {
+        path: '/index',
+        component: index
+    },
+    {
+        path: '/detail/:id',
+        component: detail
     }
 ]
 
