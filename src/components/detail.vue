@@ -213,7 +213,7 @@
                     this.$axios.post(`/site/validate/comment/post/goods/${this.$route.params.id}`, {
                         commenttxt: this.commentMsg
                     }).then(res => {
-                        console.log(res);
+                        // console.log(res);
                         if (res.data.status === 0) {
                             this.$message.success(res.data.message);
                             this.commentMsg = '';
@@ -264,5 +264,6 @@
         display: block;
         width: 100%;
     }
+
 
 </style>

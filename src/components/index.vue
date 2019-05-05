@@ -13,7 +13,7 @@
                     <div class="left-220" style="margin: 0px;">
                         <div class="banner-nav">
                             <ul>
-                                
+
                                 <li v-for="(value, index) in catelist" :key="index">
                                     <h3>
                                         <i class="iconfont icon-arrow-right"></i>
@@ -30,7 +30,9 @@
                                                 <a href="/goods/40.html">{{ value.title }}</a>
                                             </dt>
                                             <dd>
-                                                <a href="/goods/43.html" v-for="(item, i) in value.subcates" :key="i">{{ item.title }}</a>
+                                                <a href="/goods/43.html" v-for="(item, i) in value.subcates" :key="i">{{
+                                                    item.title }}
+                                                </a>
                                             </dd>
                                         </dl>
                                     </div>
@@ -73,7 +75,9 @@
             <div class="main-tit">
                 <h2>{{ value.catetitle }}</h2>
                 <p>
-                    <a v-for="(item, i) in value.level2catelist" :key="i" href="/goods/43.html">{{ item.subcatetitle }}</a>
+                    <a v-for="(item, i) in value.level2catelist" :key="i" href="/goods/43.html">{{ item.subcatetitle
+                        }}
+                    </a>
                     <a href="/goods/40.html">更多
                         <i>+</i>
                     </a>
@@ -83,8 +87,8 @@
                 <div class="wrap-box">
                     <ul class="img-list">
                         <li v-for="(item, i) in value.datas" :key="i">
-<!--                            <a href="#/site/goodsinfo/87" class="">-->
-                                <router-link :to="'/detail/' + item.artID">
+                            <!--                            <a href="#/site/goodsinfo/87" class="">-->
+                            <router-link :to="'/detail/' + item.artID">
                                 <div class="img-box">
                                     <img :src="item.img_url">
                                 </div>
@@ -99,8 +103,8 @@
                                         </span>
                                     </p>
                                 </div>
-                                </router-link>
-<!--                            </a>-->
+                            </router-link>
+                            <!--                            </a>-->
                         </li>
                     </ul>
                 </div>
@@ -138,7 +142,7 @@
                     this.sectionlist = res.data.message;
                 })
 
-        },
+        }
         /*filters: {
             formatTime (value) {
                 return moment(value).format('YYYY年MM月DD日');

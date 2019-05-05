@@ -18,16 +18,19 @@
                         <strong>|</strong>
                     </span>
                         <span>
-                        <a href="" class="">会员中心</a>
+                        <router-link to="/userContainer">会员中心</router-link>
                         <strong>|</strong>
                         <a>退出</a>
                         <strong>|</strong>
                     </span>
                         <a href="" class="">
-                            <i class="iconfont icon-cart"></i>购物车(
+                            <i class="iconfont icon-cart"></i>
+                            购物车(
                             <span id="shoppingCartCount">
                             <span>4</span>
-                        </span>)</a>
+                        </span>
+                            )
+                        </a>
                     </div>
                 </div>
             </div>
@@ -74,7 +77,8 @@
                     </div>
                     <div class="search-box">
                         <div class="input-box">
-                            <input id="keywords" name="keywords" type="text" onkeydown="if(event.keyCode==13){};" placeholder="输入关健字" x-webkit-speech="">
+                            <input id="keywords" name="keywords" type="text" onkeydown="if(event.keyCode==13){};"
+                                   placeholder="输入关健字" x-webkit-speech="">
                         </div>
                         <a href="javascript:;">
                             <i class="iconfont icon-search"></i>
@@ -113,7 +117,9 @@
                     <div class="service">
                         <p>周一至周日 9:00-24:00</p>
                         <a href="#">
-                            <i class="iconfont icon-phone"></i>在线客服</a>
+                            <i class="iconfont icon-phone"></i>
+                            在线客服
+                        </a>
                     </div>
                 </div>
             </div>
@@ -122,9 +128,7 @@
 </template>
 
 <script>
-    export default {
-
-    }
+    export default {}
 </script>
 
 <style scoped>

@@ -16,6 +16,11 @@ Vue.use(VueRuter);
 
 import index from './components/index.vue';
 import detail from './components/detail.vue';
+import userContainer from './components/userContainer.vue';
+import userCenter from './components/userCenter.vue';
+import order from './components/order.vue';
+import orderDetail from './components/orderDetail.vue';
+
 
 const routes = [
     {
@@ -29,15 +34,38 @@ const routes = [
     {
         path: '/detail/:id',
         component: detail
+    },
+    {
+        path: '/userContainer',
+        component: userContainer,
+        children: [
+            {
+                path: '/userConter',
+                component: userCenter
+            },
+            {
+                path: '',
+                redirect: '/userConter'
+            },
+            {
+                path: '/order',
+                component: order
+            },
+            {
+                path: '/orderDetail',
+                component: orderDetail
+            }
+        ]
     }
-]
+];
 
 const router = new VueRuter({
     routes
-})
+
+});
 
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 import axios from 'axios';
 
@@ -50,7 +78,6 @@ import moment from 'moment';
 Vue.filter("formatTime", value => {
     return moment(value).format('YYYY年MM月DD日');
 })
-
 
 
 new Vue({
