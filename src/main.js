@@ -45,6 +45,13 @@ Vue.prototype.$axios = axios;
 
 axios.defaults.baseURL = "http://111.230.232.110:8899";
 
+import moment from 'moment';
+
+Vue.filter("formatTime", value => {
+    return moment(value).format('YYYY年MM月DD日');
+})
+
+
 
 new Vue({
     render: h => h(App),

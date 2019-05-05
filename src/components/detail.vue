@@ -14,7 +14,11 @@
                     <div class="left-925">
                         <div class="goods-box clearfix">
                             <div class="pic-box">
-                                <img :src="img" alt="">
+                                <el-carousel height="330px">
+                                    <el-carousel-item v-for="item in imglist" :key="item.id">
+                                        <img :src="item.original_path" alt="">
+                                    </el-carousel-item>
+                                </el-carousel>
                             </div>
                             <div class="goods-spec">
                                 <h1>{{ goodsinfo.title }}</h1>
@@ -42,26 +46,8 @@
                                         <dt>购买数量</dt>
                                         <dd>
                                             <div class="stock-box">
-                                                <div class="el-input-number el-input-number--small">
-                                                    <span role="button" class="el-input-number__decrease is-disabled">
-                                                        <i class="el-icon-minus"></i>
-                                                    </span>
-                                                    <span role="button" class="el-input-number__increase">
-                                                        <i class="el-icon-plus"></i>
-                                                    </span>
-                                                    <div class="el-input el-input--small">
-                                                        <!---->
-                                                        <input autocomplete="off" size="small" type="text" rows="2"
-                                                               max="60"
-                                                               min="1" validateevent="true" class="el-input__inner"
-                                                               role="spinbutton"
-                                                               aria-valuemax="60" aria-valuemin="1" aria-valuenow="1"
-                                                               aria-disabled="false">
-                                                        <!---->
-                                                        <!---->
-                                                        <!---->
-                                                    </div>
-                                                </div>
+                                                <el-input-number v-model="num" :min="1" :max="goodsinfo.stock_quantity"
+                                                                 label="描述文字"></el-input-number>
                                             </div>
                                             <span class="stock-txt">
                                                 库存
@@ -87,17 +73,22 @@
                             <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
                                 <ul>
                                     <li>
-                                        <a href="javascript:;" class="selected">商品介绍</a>
+                                        <a href="javascript:;" :class="{selected: !isComment}"
+                                           @click="isComment = false">商品介绍
+                                        </a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;">商品评论</a>
+                                        <a href="javascript:;" :class="{selected: isComment}" @click="isComment = true">
+                                            商品评论
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="tab-content entry" style="display: block;" v-html="goodsinfo.content">
+                            <div class="tab-content entry" style="display: block;" v-show="!isComment"
+                                 v-html="goodsinfo.content">
                                 内容
                             </div>
-                            <div class="tab-content" style="display: block;">
+                            <div class="tab-content" v-show="isComment" style="display: block;">
                                 <div class="comment-box">
                                     <div id="commentForm" name="commentForm"
                                          class="form-box">
@@ -107,12 +98,13 @@
                                         <div class="conn-box">
                                             <div class="editor">
                                                 <textarea id="txtContent" name="txtContent" sucmsg=" "
+                                                          v-model.trim="commentMsg"
                                                           datatype="*10-1000" nullmsg="请填写评论内容！"></textarea>
                                                 <span class="Validform_checktip"></span>
                                             </div>
                                             <div class="subcon">
                                                 <input id="btnSubmit" name="submit" type="submit" value="提交评论"
-                                                       class="submit">
+                                                       class="submit" @click="submit">
                                                 <span class="Validform_checktip"></span>
                                             </div>
                                         </div>
@@ -120,37 +112,30 @@
                                     <ul id="commentList" class="list-box">
                                         <p style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);">
                                             暂无评论，快来抢沙发吧！</p>
-                                        <li>
+                                        <li v-for="(value, index) in comments" :key="index">
                                             <div class="avatar-box">
                                                 <i class="iconfont icon-user-full"></i>
                                             </div>
                                             <div class="inner-box">
                                                 <div class="info">
-                                                    <span>匿名用户</span>
-                                                    <span>2017/10/23 14:58:59</span>
+                                                    <span>{{ value.user_name }}</span>
+                                                    <span>{{ value.add_time }}</span>
                                                 </div>
-                                                <p>testtesttest</p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="avatar-box">
-                                                <i class="iconfont icon-user-full"></i>
-                                            </div>
-                                            <div class="inner-box">
-                                                <div class="info">
-                                                    <span>匿名用户</span>
-                                                    <span>2017/10/23 14:59:36</span>
-                                                </div>
-                                                <p>很清晰调动单很清晰调动单</p>
+                                                <p>{{ value.content }}</p>
                                             </div>
                                         </li>
                                     </ul>
                                     <div class="page-box" style="margin: 5px 0px 0px 62px;">
-                                        <div id="pagination" class="digg">
-                                            <span class="disabled">« 上一页</span>
-                                            <span class="current">1</span>
-                                            <span class="disabled">下一页 »</span>
-                                        </div>
+                                        <el-pagination
+                                                @size-change="handleSizeChange"
+                                                @current-change="handleCurrentChange"
+                                                :current-page="pageIndex"
+                                                :page-sizes="[5, 10, 15, 20]"
+                                                :page-size="pageSize"
+                                                layout="total, sizes, prev, pager, next, jumper"
+                                                background
+                                                :total="totalcount">
+                                        </el-pagination>
                                     </div>
                                 </div>
                             </div>
@@ -184,16 +169,58 @@
 
 <script>
     // import axios from "axios";
-    import moment from "moment";
+    // import moment from "moment";
 
 
     export default {
         name: "detail",
         data() {
             return {
-                img: '',
+                imglist: [],
                 goodsinfo: [],
-                hotgoodslist: []
+                hotgoodslist: [],
+                isComment: false,
+                num: 1,
+                pageSize: 10,
+                pageIndex: 1,
+                totalcount: 0,
+                comments: [],
+                commentMsg: ''
+            }
+        },
+        methods: {
+            getComments() {
+                this.$axios.get(`/site/comment/getbypage/goods/${this.$route.params.id}?pageIndex=${this.pageIndex}&pageSize=${this.pageSize}`)
+                    .then(res => {
+                        // console.log(res);
+                        this.totalcount = res.data.totalcount;
+                        this.comments = res.data.message;
+                    })
+            },
+            handleSizeChange(val) {
+                this.pageSize = val;
+                this.getComments();
+            },
+            handleCurrentChange(val) {
+                this.pageIndex = val;
+                this.getComments();
+            },
+            submit() {
+                if (this.commentMsg === '') {
+                    this.$message.warning('评论内容不能为空!');
+                    return;
+                } else {
+                    this.$axios.post(`/site/validate/comment/post/goods/${this.$route.params.id}`, {
+                        commenttxt: this.commentMsg
+                    }).then(res => {
+                        console.log(res);
+                        if (res.data.status === 0) {
+                            this.$message.success(res.data.message);
+                            this.commentMsg = '';
+                            this.getComments();
+                        }
+                    })
+                }
             }
         },
         created() {
@@ -201,15 +228,21 @@
             const id = this.$route.params.id;
             this.$axios.get(`/site/goods/getgoodsinfo/${id}`)
                 .then(res => {
-                    // console.log(res);
-                    this.img = res.data.message.imglist[0].original_path;
+                    this.imglist = res.data.message.imglist;
                     this.goodsinfo = res.data.message.goodsinfo;
                     this.hotgoodslist = res.data.message.hotgoodslist;
-                })
+                });
+            this.getComments();
         },
-        filters: {
-            formatTime(value) {
-                return moment(value).format('YYYY年MM月DD日');
+        watch: {
+            '$route.params.id'(nv) {
+                this.$axios.get(`/site/goods/getgoodsinfo/${nv}`)
+                    .then(res => {
+                        this.imglist = res.data.message.imglist;
+                        this.goodsinfo = res.data.message.goodsinfo;
+                        this.hotgoodslist = res.data.message.hotgoodslist;
+                    });
+                this.getComments();
             }
         }
     }
@@ -218,8 +251,8 @@
 <style>
 
     .pic-box {
-        width: 300px;
-        height: 300px;
+        width: 330px;
+        height: 330px;
     }
 
     .pic-box img {

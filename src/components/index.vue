@@ -111,7 +111,7 @@
 </template>+
 <script>
     // import axios from "axios";
-    import moment from "moment";
+    // import moment from "moment";
 
     export default {
         name: "index",
@@ -139,11 +139,11 @@
                 })
 
         },
-        filters: {
+        /*filters: {
             formatTime (value) {
                 return moment(value).format('YYYY年MM月DD日');
             }
-        }
+        }*/
     }
 </script>
 
